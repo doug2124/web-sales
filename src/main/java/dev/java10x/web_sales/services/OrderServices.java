@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import dev.java10x.web_sales.repositories.*;
 import java.util.*;
 import dev.java10x.web_sales.models.*;
-import dev.java10x.web_sales.dtos.*;
 import dev.java10x.web_sales.enumerates.*;
 @Service
 public class OrderServices {
@@ -18,25 +17,29 @@ public class OrderServices {
         return orderRepository.findAll();
     }
     public OrderModel create(OrderModel entity){
-        OrderModel NewOrder= new OrderModel();//から注文作成
-        NewOrder.set(OrderStatus.PENDING);//その注文の状態をPENDINGにする
+        OrderModel newOrder= new OrderModel();                                                          //から注文作成
+        newOrder.setStatus(OrderStatus.PENDING);                                                        //その注文の状態をPENDINGにする
 
-        List<OrderItemModel> items= entity.getItems();//注文に含まれる商品を取得
+        List<OrderItemModel> items= new ArrayList<>();                                                  //注文に含まれる商品を取得
         double total=0;
 
-        for(OrderItemModel item: items){
-            ProductModel product = productRepository.findById(item.getId()).orElseThrow(()
-                    ->new RuntimeException("Product not found"));
-            OrderItemModel orderItem= new OrderItemModel();
-            orderItem.setOrder(NewOrder);
+        for(OrderItemModel item: entity.getItems()){                                                    //各商品を注文にいれる
+            ProductModel product = productRepository.findById(item.getProduct().getId()).orElseThrow(()//DBにある商品の中に入力されたの商品を検索
+                    ->new RuntimeException("Product not found"));                                       //何もなかったらこのメッセージを表示
+            OrderItemModel orderItem= new OrderItemModel();                                             //商品オブジェクト作成
+            orderItem.setOrder(newOrder);
             orderItem.setProduct(product);
             orderItem.setPrice(product.getPrice());
-            total+=item.getPrice()*item.getQuantity();
-            orderItem.setTotal(total);
-            item.add(items);
-        }
+            orderItem.setQuantity(item.getQuantity());
 
-       return orderRepository.save(NewOrder);
+            double subtotal= product.getPrice()*item.getQuantity();
+            total+=subtotal;
+            orderItem.setTotal(subtotal);
+            items.add(orderItem);
+        }
+        newOrder.setItems(items);
+        newOrder.setTotalPrice(total);
+       return orderRepository.save(newOrder);
     }
     public void delete(Long id){
         orderRepository.deleteById(id);

@@ -32,9 +32,9 @@ public class OrderModel{
     private List<OrderItemModel>items;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-    public void set(OrderStatus pending) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'set'");
+    private double totalPrice;
+
+    public double getTotalPrice() {
+        return totalPrice;
     }
-    
 }

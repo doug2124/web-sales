@@ -19,11 +19,14 @@ public class OrderItemModel {
     @ManyToOne
     private ProductModel product;
     private Integer quantity;
+    private double total;
     private double price;
 
-    public void add(List<OrderItemModel> items) {
+    public void setTotal(double total) {
     }
 
-    public void setTotal(double total) {
+    public Object getTotal() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTotal'");
     }
 }

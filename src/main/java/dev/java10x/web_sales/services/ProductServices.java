@@ -39,7 +39,7 @@ public class ProductServices {
                 switch (key) {
                     case "name"->product.setName((String)value);
                     case "price"->product.setPrice((Double)value);
-                    case "quantity"->product.setStock((Integer)value);
+                    case "stock"->product.setStock((Integer)value);
                 }
             });
             return productRepository.save(product);
