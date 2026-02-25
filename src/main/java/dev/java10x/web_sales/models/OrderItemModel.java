@@ -2,6 +2,9 @@ package dev.java10x.web_sales.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -17,4 +20,10 @@ public class OrderItemModel {
     private ProductModel product;
     private Integer quantity;
     private double price;
+
+    public void add(List<OrderItemModel> items) {
+    }
+
+    public void setTotal(double total) {
+    }
 }

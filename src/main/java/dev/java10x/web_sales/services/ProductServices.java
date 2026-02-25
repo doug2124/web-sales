@@ -1,6 +1,5 @@
 package dev.java10x.web_sales.services;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import dev.java10x.web_sales.repositories.ProductRepository;
 import dev.java10x.web_sales.models.ProductModel;
@@ -24,7 +23,7 @@ public class ProductServices {
         return productRepository.findById(id).map(procuct -> {
             procuct.setName(entity.getName());
             procuct.setPrice(entity.getPrice());
-            procuct.setQuantity(entity.getQuantity());
+            procuct.setStock(entity.getStock());
             return productRepository.save(procuct);
         }).orElseGet(() -> {
             entity.setId(id);
@@ -40,7 +39,7 @@ public class ProductServices {
                 switch (key) {
                     case "name"->product.setName((String)value);
                     case "price"->product.setPrice((Double)value);
-                    case "quantity"->product.setQuantity((Integer)value);
+                    case "quantity"->product.setStock((Integer)value);
                 }
             });
             return productRepository.save(product);
